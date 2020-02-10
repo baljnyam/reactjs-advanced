@@ -1,7 +1,14 @@
 import React from "react";
 
 function App() {
-  return <Calculator />;
+  return (
+    <div>
+      <Reverser />
+      <br />
+      <br />
+      <Calculator />
+    </div>
+  );
 }
 
 const scaleNames = {
@@ -93,6 +100,71 @@ class Calculator extends React.Component {
           onTemperatureChange={this.handleFahrenheitChange}
         />
         <BoilingVerdict celsius={parseFloat(celsius)} />
+      </div>
+    );
+  }
+}
+// Word reverser ----- practice
+const lastWordsName = {
+  a: "A field words",
+  b: "B field words"
+};
+
+class WordInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.props.onWordChange(e.target.value);
+  }
+
+  render() {
+    const word = this.props.word;
+    const lastWord = this.props.lastWord;
+    return (
+      <fieldset>
+        <legend>Enter reversing words in {lastWordsName[lastWord]}:</legend>
+        <input value={word} onChange={this.handleChange} />
+      </fieldset>
+    );
+  }
+}
+
+function reverseWords(word) {
+  return word
+    .split("")
+    .reverse()
+    .join("");
+}
+
+class Reverser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleAChange = this.handleAChange.bind(this);
+    this.handleBChange = this.handleBChange.bind(this);
+    this.state = { word: "", lastWord: "a" };
+  }
+
+  handleAChange(word) {
+    this.setState({ lastWord: "a", word });
+  }
+
+  handleBChange(word) {
+    this.setState({ lastWord: "b", word });
+  }
+
+  render() {
+    const lastWord = this.state.lastWord;
+    const word = this.state.word;
+    const a = lastWord === "b" ? reverseWords(word) : word;
+    const b = lastWord === "a" ? reverseWords(word) : word;
+
+    return (
+      <div>
+        <WordInput lastWord="a" word={a} onWordChange={this.handleAChange} />
+        <WordInput lastWord="b" word={b} onWordChange={this.handleBChange} />
       </div>
     );
   }
