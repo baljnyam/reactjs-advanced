@@ -7,6 +7,10 @@ function App() {
       <br />
       <br />
       <Calculator />
+      <br />
+      <Clock />
+      <br />
+      <SignUpDialog />
     </div>
   );
 }
@@ -167,6 +171,88 @@ class Reverser extends React.Component {
         <WordInput lastWord="b" word={b} onWordChange={this.handleBChange} />
       </div>
     );
+  }
+}
+
+// Time ------------ Clock
+
+function FormattedDate(props) {
+  return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+}
+
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>TIME</h1>
+        <FormattedDate date={this.state.date} />
+      </div>
+    );
+  }
+}
+
+//--inheritance and composition
+
+function FancyBorder(props) {
+  return (
+    <div className={"FancyBorder FancyBorder-" + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">{props.title}</h1>
+      <p className="Dialog-message">{props.message}</p>
+      {props.children}
+    </FancyBorder>
+  );
+}
+
+class SignUpDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = { login: "" };
+  }
+
+  render() {
+    return (
+      <Dialog title="some program" message="give me the name please?">
+        <input value={this.state.login} onChange={this.handleChange} />
+        <button onClick={this.handleSignUp}>Sign Me Up!</button>
+      </Dialog>
+    );
+  }
+
+  handleChange(e) {
+    this.setState({ login: e.target.value });
+  }
+
+  handleSignUp() {
+    alert(`Welcome aboard, ${this.state.login}!`);
   }
 }
 
