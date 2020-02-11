@@ -256,6 +256,8 @@ class SignUpDialog extends React.Component {
   }
 }
 
+// Hooks --------------------------- Hooks ----------------------------
+
 export default App;
 
 // API react components
